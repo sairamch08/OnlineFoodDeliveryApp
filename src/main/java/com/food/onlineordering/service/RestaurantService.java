@@ -11,7 +11,7 @@ public interface RestaurantService {
 
     public Restaurant createRestaurant(CreateRestaurantRequest req, User user);
 
-    // for upadeting also we need the same fields insteaad of duplicate object used same objec.
+    // for upadeting also we need the same fields insteaad of duplicate object used same object.
     public Restaurant updateRestaurant(Long restaurantId, CreateRestaurantRequest updateRestaurant) throws Exception;
 
     public void deleteRestaurant(Long restaurantId) throws Exception;
