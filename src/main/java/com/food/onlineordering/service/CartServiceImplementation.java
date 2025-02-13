@@ -1,13 +1,12 @@
-package com.food.onlineordering.repository;
+package com.food.onlineordering.service;
 
 import com.food.onlineordering.model.Cart;
 import com.food.onlineordering.model.CartItem;
 import com.food.onlineordering.model.Food;
 import com.food.onlineordering.model.User;
+import com.food.onlineordering.repository.CartItemRepository;
+import com.food.onlineordering.repository.CartRepository;
 import com.food.onlineordering.request.AddCartItemRequest;
-import com.food.onlineordering.service.CartService;
-import com.food.onlineordering.service.FoodService;
-import com.food.onlineordering.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -115,17 +114,22 @@ public class CartServiceImplementation implements CartService {
     }
 
     @Override
-    public Cart findCartByUserId(String jwt) throws Exception {
-        User user = userService.findUserByJwtToken(jwt);
+    public Cart findCartByUserId(Long userId) throws Exception {
 
-        return cartRepository.findByCustomerId(user.getId());
+
+       // User user = userService.findUserByJwtToken(jwt);
+
+        Cart cart= cartRepository.findByCustomerId(userId);
+        cart.setTotal(calculateCartTotals(cart));
+
+        return cart;
 
     }
 
     @Override
-    public Cart clearCart(String jwt) throws Exception {
-        User user = userService.findUserByJwtToken(jwt);
-        Cart cart = findCartByUserId(jwt);
+    public Cart clearCart(Long userId) throws Exception {
+      //  User user = userService.findUserByJwtToken(jwt);
+        Cart cart = findCartByUserId(userId);
         cart.getItem().clear();
 
         return cartRepository.save(cart);
